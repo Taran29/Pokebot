@@ -43,8 +43,9 @@ mongoose.connect(process.env.MONGODB_URI)
 
 client.once("ready", () => {
   console.log('Bot is ready')
+  client.user.setStatus('online')
   client.user.setActivity("_help", {
-    type: "Playing",
+    type: "PLAYING",
   });
 })
 
