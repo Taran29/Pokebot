@@ -43,8 +43,8 @@ mongoose.connect(process.env.MONGODB_URI)
 
 client.once("ready", () => {
   console.log('Bot is ready')
-  bot.user.setStatus('available')
-  bot.user.setPresence({
+  client.user.setStatus('available')
+  client.user.setPresence({
     game: {
       name: 'Get started with _help',
       type: "PLAYING",
