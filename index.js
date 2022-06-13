@@ -12,8 +12,15 @@ import Pokemon from './models/pokemon.js'
 import Rarity from './models/rarity.js'
 import Box from './models/box.js'
 import buyItem from './helpers/buyItem.js'
+import http from 'http'
 
 config()
+
+const PORT = process.env.PORT || 3000
+
+http.createServer((req, res) => {
+
+}).listen(PORT)
 
 const client = new Client({
   intents:
