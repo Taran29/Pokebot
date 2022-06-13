@@ -6,11 +6,11 @@ date = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
 const userSchema = new mongoose.Schema({
   _id: { type: String, required: true },
   name: { type: String, required: true },
-  coins: { type: Number, default: 1000 },
-  pokeBalls: { type: Number, default: 20 },
-  greatBalls: { type: Number, default: 0 },
-  ultraBalls: { type: Number, default: 0 },
-  masterBalls: { type: Number, default: 0 },
+  coins: { type: Number, default: 50000 },
+  pokeBalls: { type: Number, default: 50 },
+  greatBalls: { type: Number, default: 50 },
+  ultraBalls: { type: Number, default: 50 },
+  masterBalls: { type: Number, default: 1 },
   dateJoined: { type: String, default: date },
   isFirst: { type: Boolean, default: true }
 })
