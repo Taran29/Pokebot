@@ -43,9 +43,8 @@ mongoose.connect(process.env.MONGODB_URI)
 
 client.once("ready", () => {
   console.log('Bot is ready')
-  client.user.setActivity("with depression", {
-    type: "STREAMING",
-    url: "https://www.twitch.tv/monstercat"
+  client.user.setActivity("_help", {
+    type: "Playing",
   });
 })
 
