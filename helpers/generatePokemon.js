@@ -6,9 +6,9 @@ const generatePokemon = async () => {
   const rarities = [
     { name: "Common", value: 0.4 },
     { name: "Uncommon", value: 0.7 },
-    { name: "Rare", value: 0.97 },
-    { name: "Super Rare", value: 0.99 },
-    { name: "Legendary", value: 1 }
+    { name: "Rare", value: 0.96 },
+    { name: "Super Rare", value: 0.98 },
+    { name: "Legendary", value: 0.99 }
   ]
 
   let rarity

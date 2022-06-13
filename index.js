@@ -178,54 +178,57 @@ client.on("messageCreate", async (msg) => {
       const checkUser = await userExists(msg.author.id)
       if (!checkUser[0]) {
         msg.channel.send("User does not exist. Please make a profile by typing  _profile")
-        return
       } else {
         let isRunning = true
         const user = checkUser[1]
         const pageSize = 20
         let pageNumber = 1
         const box = await Box.findById(msg.author.id)
-        box.box.sort((a, b) => {
-          return b.number - a.number
-        })
+        if (box.box.length === 0) {
+          await msg.channel.send("Your box is empty. Please catch more pokemon by typing _p")
+        } else {
+          box.box.sort((a, b) => {
+            return b.number - a.number
+          })
 
-        setTimeout(() => {
-          isRunning = false
-        }, 20000)
+          setTimeout(() => {
+            isRunning = false
+          }, 20000)
 
-        let totalPages = Math.ceil(box.box.length / pageSize)
-        let current = box.box.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
-        let strings = splitStrings(current, pageSize)
+          let totalPages = Math.ceil(box.box.length / pageSize)
+          let current = box.box.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+          let strings = splitStrings(current, pageSize)
 
-        let message = await msg.channel.send({ embeds: [embeds.boxEmbed(user, pageNumber, totalPages, strings[0], strings[1])] })
+          let message = await msg.channel.send({ embeds: [embeds.boxEmbed(user, pageNumber, totalPages, strings[0], strings[1])] })
 
-        while (isRunning) {
-          const msg_filter = m => m.author.id === msg.author.id
-          try {
-            const collected = await msg.channel.awaitMessages({ filter: msg_filter, max: 1, time: 20000 })
+          while (isRunning) {
+            const msg_filter = m => m.author.id === msg.author.id
+            try {
+              const collected = await msg.channel.awaitMessages({ filter: msg_filter, max: 1, time: 20000 })
 
-            let temp = collected.at(0).content.toLowerCase()
-            if (['next', 'n'].includes(temp)) {
-              if (pageNumber < totalPages) {
-                pageNumber += 1
+              let temp = collected.at(0).content.toLowerCase()
+              if (['next', 'n'].includes(temp)) {
+                if (pageNumber < totalPages) {
+                  pageNumber += 1
+                  let newCurrent = box.box.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+                  let strings = splitStrings(newCurrent, pageSize)
+                  await message.edit({ embeds: [embeds.boxEmbed(user, pageNumber, totalPages, strings[0], strings[1])] })
+                }
+              } else if (['back', 'b', 'p', 'prev'].includes(temp)) {
+                if (pageNumber > 1) {
+                  pageNumber -= 1
+                  let newCurrent = box.box.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+                  let strings = splitStrings(newCurrent, pageSize)
+                  await message.edit({ embeds: [embeds.boxEmbed(user, pageNumber, totalPages, strings[0], strings[1])] })
+                }
+              } else if (!Number.isNaN(parseInt(temp)) && (temp <= totalPages)) {
+                pageNumber = parseInt(temp)
                 let newCurrent = box.box.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
                 let strings = splitStrings(newCurrent, pageSize)
                 await message.edit({ embeds: [embeds.boxEmbed(user, pageNumber, totalPages, strings[0], strings[1])] })
               }
-            } else if (['back', 'b', 'p', 'prev'].includes(temp)) {
-              if (pageNumber > 1) {
-                pageNumber -= 1
-                let newCurrent = box.box.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
-                let strings = splitStrings(newCurrent, pageSize)
-                await message.edit({ embeds: [embeds.boxEmbed(user, pageNumber, totalPages, strings[0], strings[1])] })
-              }
-            } else if (!Number.isNaN(parseInt(temp)) && (temp <= totalPages)) {
-              pageNumber = parseInt(temp)
-              let newCurrent = box.box.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
-              let strings = splitStrings(newCurrent, pageSize)
-              await message.edit({ embeds: [embeds.boxEmbed(user, pageNumber, totalPages, strings[0], strings[1])] })
-            }
-          } catch (error) { }
+            } catch (error) { }
+          }
         }
       }
     } else if (['_bal', '_coins', '_balance'].includes(msg.content)) {
