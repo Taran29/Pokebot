@@ -2,13 +2,13 @@ import Rarity from "../models/rarity.js";
 import Pokemon from "../models/pokemon.js";
 
 const generatePokemon = async () => {
-  let rand = Math.floor(Math.random() * 100) / 100;
+  let rand = Math.floor((Math.random() + 0.01) * 100) / 100;
   const rarities = [
     { name: "Common", value: 0.4 },
     { name: "Uncommon", value: 0.7 },
-    { name: "Rare", value: 0.96 },
-    { name: "Super Rare", value: 0.98 },
-    { name: "Legendary", value: 0.99 }
+    { name: "Rare", value: 0.97 },
+    { name: "Super Rare", value: 0.99 },
+    { name: "Legendary", value: 1 }
   ]
 
   let rarity
