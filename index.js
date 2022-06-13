@@ -43,13 +43,13 @@ mongoose.connect(process.env.MONGODB_URI)
 
 client.once("ready", () => {
   console.log('Bot is ready')
-  client.user.setStatus('available')
   client.user.setPresence({
-    game: {
-      name: 'Get started with _help',
-      type: "PLAYING",
+    status: 'online',
+    activity: {
+      name: 'with depression',
+      type: 'STREAMING',
     }
-  });
+  })
 })
 
 let currentSpawnStatus = false
