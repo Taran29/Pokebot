@@ -19,7 +19,10 @@ config()
 const PORT = process.env.PORT || 3000
 
 http.createServer((req, res) => {
-
+  if (req.url === '/') {
+    res.write('App is running.')
+    res.end()
+  }
 }).listen(PORT)
 
 const client = new Client({
